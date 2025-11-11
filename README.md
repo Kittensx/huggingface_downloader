@@ -22,7 +22,17 @@ Mirror files from a Hugging Face repo (optionally just a subfolder) **directly f
 ---
 
 ## Quick start
+### Install with scripts
+1) Run the virtual environment and install the requirements
+```bash
+install_venv.bat
+```
+2) Run the program
+```bash
+run_hf_download.bat
+```
 
+### Manual Install
 ```bash
 git clone https://github.com/<your-username>/huggingface_downloader.git
 cd huggingface_downloader

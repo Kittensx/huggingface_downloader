@@ -1,17 +1,39 @@
 #!/usr/bin/env python3
 """
-Download all files from a Hugging Face repo (optionally a subfolder)
-from a URL like:
-  https://huggingface.co/<owner>/<repo>/tree/<branch>/<optional/subfolder>
+huggingface_downloader — mirror files from a Hugging Face repo (optionally a subfolder)
+directly from its webpage URL.
 
-Usage:
-  python hf_grab.py "https://huggingface.co/briaai/FIBO/tree/main" ./dest_folder
-  python hf_grab.py "https://huggingface.co/owner/repo/tree/main/models/onnx" ./onnx_only
+Supported URL forms:
+  - https://huggingface.co/<owner>/<repo>
+  - https://huggingface.co/<owner>/<repo>/tree/<branch>
+  - https://huggingface.co/<owner>/<repo>/tree/<branch>/<path/inside>
+  - Also works with datasets and spaces:
+      https://huggingface.co/datasets/<owner>/<repo>
+      https://huggingface.co/spaces/<owner>/<repo>
 
-Auth:
-- Private/gated repos need a token. Provide via env var HUGGINGFACE_HUB_TOKEN
-  (your PS launcher already sets it), or have `huggingface-cli login`.
+Examples:
+  # Entire repo (defaults to main if /tree not provided)
+  python hf_grab.py "https://huggingface.co/acme/awesome-model" ./out
+
+  # Specific branch root
+  python hf_grab.py "https://huggingface.co/acme/awesome-model/tree/dev" ./out
+
+  # Subfolder only (just downloads that path)
+  python hf_grab.py "https://huggingface.co/acme/awesome-model/tree/main/models/onnx" ./onnx_only
+
+Authentication:
+  Private or gated repos require a user access token with at least READ scope.
+  Set it via the environment variable HUGGINGFACE_HUB_TOKEN or log in once with:
+      huggingface-cli login
+  (If you use the provided PowerShell wrapper, it can prompt and set the token
+   for the current process automatically.)
+
+Notes:
+  - Resumable: repeated runs only fetch missing/corrupted files.
+  - Structure-preserving: local layout mirrors the repo.
+  - You can further restrict downloads using allow_patterns/ignore_patterns in code.
 """
+
 
 import argparse
 import os
@@ -145,3 +167,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
